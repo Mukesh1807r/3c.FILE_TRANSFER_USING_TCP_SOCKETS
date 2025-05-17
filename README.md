@@ -11,53 +11,61 @@ To write a python program for creating File Transfer using TCP Sockets Links
 ### client.py
 ```python
 import socket
+
 s = socket.socket()
 host = socket.gethostname()
 port = 60000
 s.connect((host, port))
+
 s.send("Hello server!".encode())
 with open('received_file', 'wb') as f:
     while True:
-        print('receiving data...')
+        print('Receiving data...')
         data = s.recv(1024)
-        print('data=%s', (data))
         if not data:
             break
+        print(f"Received chunk of size {len(data)} bytes")
         f.write(data)
-f.close()
-print('Successfully get the file')
+
+print('File received successfully.')
+
 s.close()
-print('connection closed')
+print('Connection closed.')
+
 ```
 ### server.py
 ```python
 import socket
-port = 60000
+
 s = socket.socket()
 host = socket.gethostname()
-s.bind((host, port))
-s.listen(5)
-while True:
-    conn, addr = s.accept()
-    data = conn.recv(1024)
-    print('Server received', repr(data))
-    filename='mytext.txt'
-    f = open(filename,'rb')
-    l = f.read(1024)
-    while (l):
-        conn.send(l)
-        print('Sent ',repr(l))
-        l = f.read(1024)
-    f.close()
-    print('Done sending')
-    conn.send('Thank you for connecting'.encode())
-    conn.close()
+port = 60000
+s.connect((host, port))
+
+s.send("Hello server!".encode())
+with open('received_file', 'wb') as f:
+    while True:
+        print('Receiving data...')
+        data = s.recv(1024)
+        if not data:
+            break
+        print(f"Received chunk of size {len(data)} bytes")
+        f.write(data)
+
+print('File received successfully.')
+
+s.close()
+print('Connection closed.')
+
 ```
 ## OUTPUT
 ### clinet.py
-![alt text](client.png)
+![Screenshot 2025-05-17 113202](https://github.com/user-attachments/assets/8452e5fd-b55d-430c-8679-4a61e1bd0e54)
+
 ### server.py
-![alt text](server.png)
+![Screenshot 2025-05-17 113016](https://github.com/user-attachments/assets/54d6a8e4-c610-46a0-ab85-5098529e795b)
+
+
 ## RESULT
 Thus, the python program for creating File Transfer using TCP Sockets Links was 
 successfully created and executed.
